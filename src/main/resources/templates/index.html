@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            color: #242424;
+        }
+
+        .center-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 50px;
+            background: white;
+            border-bottom: 1px solid #eee;
+            font-family: Arial, sans-serif;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #242424;
+            font-size: 14px;
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .post {
+            padding: 25px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .actions a {
+            margin-right: 15px;
+            font-size: 13px;
+            text-decoration: none;
+            color: #2563eb;
+        }
+
+        .delete {
+            color: #ef4444;
+        }
+
+        /* FLOAT BUTTON */
+        .create-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: black;
+            color: white;
+            padding: 16px 26px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .like-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">BlogLite</div>
+
+    <div class="center-text"
+         th:if="${#authorization.expression('isAuthenticated()')}">
+        Welcome, <span th:text="${#strings.capitalize(#authentication.name)}"></span>
+    </div>
+
+    <div class="nav-links">
+        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">Logout</a>
+
+        <span th:if="${!#authorization.expression('isAuthenticated()')}">
+            <a href="/login">Sign in</a>
+            <a href="/register">Get started</a>
+        </span>
+    </div>
+</div>
+
+<!-- POSTS -->
+<div class="container">
+    <div th:if="${#lists.isEmpty(posts)}" style="text-align:center;">
+        <h3>No posts yet</h3>
+    </div>
+    <div th:each="post : ${posts}" class="post">
+
+        <div class="title" th:text="${post.title}"></div>
+
+        <div class="content"
+             th:text="${#strings.abbreviate(post.content, 200)}">
+        </div>
+
+        <div class="meta">
+            By <span th:text="${post.user.username}"></span>
+        </div>
+
+        <div class="actions">
+            <a th:href="@{'/post/' + ${post.id}}">Read more</a>
+
+            <span th:if="${#authentication.name == post.user.username}">
+                <a th:href="@{'/edit/' + ${post.id}}">Edit</a>
+                <a th:href="@{'/delete/' + ${post.id}}"
+                   onclick="return confirm('Delete this post?')">
+   Delete
+</a>
+            </span>
+        </div>
+
+    </div>
+
+</div>
+<!-- SEARCH -->
+<form action="/search" method="get" style="text-align:center; margin:20px;">
+    <input name="keyword" placeholder="Search..." style="padding:10px;width:300px;">
+</form>
+
+<div th:each="post : ${posts}" class="card">
+
+    <div class="title" th:text="${post.title}"></div>
+
+    <p th:utext="${#strings.abbreviate(post.content,150)}"></p>
+
+    <div class="actions">
+
+        <a th:href="@{'/post/' + ${post.id}}">Read</a>
+
+        <!-- LIKE -->
+        <form th:action="@{'/like/' + ${post.id}}" method="post" style="display:inline;">
+            <button class="like-btn">❤️</button>
+        </form>
+
+        <span th:text="${@likeRepository.countByPostId(post.id)}"></span>
+
+    </div>
+</div>
+
+<a href="/create" class="create-btn"
+   th:if="${#authorization.expression('isAuthenticated()')}">
+    Write
+</a>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Write</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Georgia, serif;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+        }
+
+        input {
+            width: 100%;
+            font-size: 32px;
+            border: none;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            line-height: 1.6;
+            resize: none;
+        }
+
+        button {
+            position: fixed;
+            top: 20px;
+            right: 40px;
+            padding: 8px 16px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 20px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("input", function (e) {
+            if (e.target.tagName === "TEXTAREA") {
+                e.target.style.height = "auto";
+                e.target.style.height = e.target.scrollHeight + "px";
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+<form action="/create" method="post" th:object="${post}">
+    <input type="hidden" th:field="*{id}" />
+
+    <div class="container">
+        <input th:field="*{title}" placeholder="Title" />
+        <textarea th:field="*{content}" placeholder="Tell your story..."></textarea>
+    </div>
+
+    <button type="submit">Publish</button>
+</form>
+
+</body>
+</html>

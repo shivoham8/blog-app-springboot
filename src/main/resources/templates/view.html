@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post</title>
+
+    <style>
+        body {
+            font-family: Georgia, serif;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #242424;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 th:text="${post.title}"></h1>
+
+    <div class="meta">
+        By <span th:text="${post.user.username}"></span>
+    </div>
+
+    <div class="content" th:text="${post.content}"></div>
+
+</div>
+<h3>Comments</h3>
+
+<!-- Add Comment -->
+<form th:if="${#authorization.expression('isAuthenticated()')}"
+      th:action="@{'/comment/' + ${post.id}}"
+      method="post">
+
+    <input type="text" name="content" placeholder="Write a comment..." style="width:70%;" />
+    <button type="submit">Post</button>
+</form>
+
+<!-- Show Comments -->
+<div th:each="c : ${comments}" style="margin-top:15px;">
+
+    <strong th:text="${#strings.capitalizeWords(c.user.username)}"></strong>
+    <p th:text="${c.content}"></p>
+
+    <hr>
+</div>
+<h3>Comments</h3>
+
+<div th:each="c : ${comments}">
+
+    <strong th:text="${#strings.capitalizeWords(c.user.username)}"></strong>
+    <p th:text="${c.content}"></p>
+
+    <!-- Reply form -->
+    <form th:action="@{'/reply/' + ${c.id}}" method="post">
+        <input name="content" placeholder="Reply..." />
+    </form>
+
+    <!-- Replies -->
+    <div th:each="r : ${allReplies}"
+         th:if="${r.parent != null and r.parent.id == c.id}"
+         style="margin-left:20px; margin-top:10px;">
+
+        <strong th:text="${#strings.capitalizeWords(r.user.username)}"></strong>
+        <p th:text="${r.content}"></p>
+
+    </div>
+
+</div>
+</body>
+</html>
