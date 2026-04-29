@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/css/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/login", "/register", "/css/**").permitAll()
                         .requestMatchers("/create", "/edit/**", "/delete/**").authenticated()
                         .anyRequest().authenticated()
                 )
@@ -37,8 +37,8 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/login"))
-                .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+                .csrf(csrf -> csrf.disable());
+//                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
         return http.build();
     }
 
