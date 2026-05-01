@@ -25,6 +25,39 @@ button, a {
     word-wrap: break-word;
 }
 
+/* NAVBAR BASE */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* RIGHT SIDE ITEMS */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .nav-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+.nav-right span {
+    word-break: break-word;
+}
 /* Mobile adjustments */
 @media (max-width: 768px) {
 
