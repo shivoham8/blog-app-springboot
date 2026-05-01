@@ -133,13 +133,15 @@
 <div class="navbar">
     <div class="logo nav-left">BlogLite</div>
 
-    <div class="center-text nav-right"
+    <div class="center-text nav-center"
          th:if="${#authorization.expression('isAuthenticated()')}">
         Welcome, <span th:text="${#strings.capitalize(#authentication.name)}"></span>
-        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">Logout</a>
     </div>
 
     <div class="nav-links">
+        <div class="nav-right">
+            <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">Logout</a>
+        </div>
 
         <span th:if="${!#authorization.expression('isAuthenticated()')}">
             <a href="/login">Sign in</a>
