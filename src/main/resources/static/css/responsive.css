@@ -1,0 +1,55 @@
+/* Prevent horizontal scroll */
+body {
+    overflow-x: hidden;
+}
+
+/* Make all inputs responsive */
+input, textarea {
+    max-width: 100%;
+}
+
+/* Fix large forms */
+form {
+    width: 90% !important;
+    max-width: 500px;
+    margin: auto;
+}
+
+/* Fix containers that are too wide */
+div {
+    max-width: 100%;
+}
+
+/* Buttons wrapping */
+button, a {
+    word-wrap: break-word;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 22px !important;
+    }
+
+    form {
+        width: 95% !important;
+    }
+
+    input, textarea {
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    /* Fix overflowing text */
+    p, div {
+        word-break: break-word;
+    }
+}
