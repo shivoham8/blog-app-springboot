@@ -131,9 +131,9 @@
 
 <!-- NAVBAR -->
 <div class="navbar">
-    <div class="logo nav-left">BlogLite</div>
+    <div class="logo">BlogLite</div>
 
-    <div class="center-text nav-center"
+    <div class="welcome"
          th:if="${#authorization.expression('isAuthenticated()')}">
         Welcome, <span th:text="${#strings.capitalize(#authentication.name)}"></span>
     </div>
